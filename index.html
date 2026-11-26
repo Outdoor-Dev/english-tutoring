@@ -120,8 +120,6 @@ nav div a:is(:hover,:focus-visible)::after{transform:scaleX(1)}
 .hero-art{width:35%;mask-image:linear-gradient(90deg,transparent,black 28%)}
 .hero-copy{max-width:63%}.hero h1{font-size:clamp(3.2rem,7.5vw,8rem)}
 }
-.email-fallback{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;margin-top:12px}
-.email-fallback button{background:var(--accent);border:1px solid;border-radius:999px;padding:6px 12px}
 </style>
 </head>
 <body id="top">
@@ -180,30 +178,15 @@ nav div a:is(:hover,:focus-visible)::after{transform:scaleX(1)}
 <div class="inquiry">
 <label for="service">Tutoring service</label>
 <select id="service" name="service"><option>ELA homework help</option><option>English conversation practice</option></select>
-<p><a class="contact-button" id="email-inquiry" href="mailto:casenglish.monica@gmail.com?subject=ELA%20homework%20help">Email Monica</a></p><div class="email-fallback"><span id="contact-address">casenglish.monica@gmail.com</span><button type="button" id="copy-email">Copy email</button><span id="copy-status" role="status"></span></div>
+<p><a class="contact-button" id="email-inquiry" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=casenglish.monica%40gmail.com&amp;su=ELA%20homework%20help" target="_blank" rel="noopener">Email me</a></p>
 </div></div></section>
 </main>
 <footer><div class="shell"><span>Monica Lopez · Online English tutoring</span><a href="#top">Back to top</a></div></footer>
 <script>
 const service = document.querySelector('#service');
-document.querySelector('#copy-email').addEventListener('click', async () => {
-  const address = document.querySelector('#contact-address');
-  const status = document.querySelector('#copy-status');
-  try {
-    await navigator.clipboard.writeText(address.textContent);
-    status.textContent = 'Email copied.';
-  } catch {
-    const range = document.createRange();
-    range.selectNodeContents(address);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-    status.textContent = 'Email selected. You can copy it now.';
-  }
-});
 const emailInquiry = document.querySelector('#email-inquiry');
 function updateInquiryLink() {
-  emailInquiry.href = 'mailto:casenglish.monica@gmail.com?subject=' + encodeURIComponent(service.value);
+  emailInquiry.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=casenglish.monica%40gmail.com&su=' + encodeURIComponent(service.value);
 }
 service.addEventListener('change', updateInquiryLink);
 document.querySelectorAll('[data-service]').forEach(link => {
