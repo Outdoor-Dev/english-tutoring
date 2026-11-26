@@ -115,6 +115,13 @@ nav div a:is(:hover,:focus-visible)::after{transform:scaleX(1)}
 .about-intro{position:relative;isolation:isolate;display:grid;align-items:start;overflow:hidden;min-height:clamp(200px,25vw,280px);margin-bottom:24px;border:1px solid var(--ink);background:#ffc1e2}
 .about-intro img{position:absolute;inset:0 0 0 auto;width:82%;height:100%;object-fit:cover;object-position:50% 53%;mix-blend-mode:multiply;mask-image:linear-gradient(90deg,transparent,#000 38%)}
 .about .about-intro h2{position:absolute;bottom:0;left:0;margin:0;padding:8px clamp(12px,2vw,20px);font-size:clamp(1.8rem,4vw,3.6rem);width:fit-content;background:#ffc1e2}
+@media(min-width:781px){
+.hero.shell{width:min(1400px,calc(100% - 64px))}
+.hero-art{width:35%;mask-image:linear-gradient(90deg,transparent,black 28%)}
+.hero-copy{max-width:63%}.hero h1{font-size:clamp(3.2rem,7.5vw,8rem)}
+}
+.email-fallback{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;margin-top:12px}
+.email-fallback button{background:var(--accent);border:1px solid;border-radius:999px;padding:6px 12px}
 </style>
 </head>
 <body id="top">
@@ -173,12 +180,27 @@ nav div a:is(:hover,:focus-visible)::after{transform:scaleX(1)}
 <div class="inquiry">
 <label for="service">Tutoring service</label>
 <select id="service" name="service"><option>ELA homework help</option><option>English conversation practice</option></select>
-<p><a class="contact-button" id="email-inquiry" href="mailto:casenglish.monica@gmail.com?subject=ELA%20homework%20help">Email Monica</a></p>
+<p><a class="contact-button" id="email-inquiry" href="mailto:casenglish.monica@gmail.com?subject=ELA%20homework%20help">Email Monica</a></p><div class="email-fallback"><span id="contact-address">casenglish.monica@gmail.com</span><button type="button" id="copy-email">Copy email</button><span id="copy-status" role="status"></span></div>
 </div></div></section>
 </main>
 <footer><div class="shell"><span>Monica Lopez · Online English tutoring</span><a href="#top">Back to top</a></div></footer>
 <script>
 const service = document.querySelector('#service');
+document.querySelector('#copy-email').addEventListener('click', async () => {
+  const address = document.querySelector('#contact-address');
+  const status = document.querySelector('#copy-status');
+  try {
+    await navigator.clipboard.writeText(address.textContent);
+    status.textContent = 'Email copied.';
+  } catch {
+    const range = document.createRange();
+    range.selectNodeContents(address);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    status.textContent = 'Email selected. You can copy it now.';
+  }
+});
 const emailInquiry = document.querySelector('#email-inquiry');
 function updateInquiryLink() {
   emailInquiry.href = 'mailto:casenglish.monica@gmail.com?subject=' + encodeURIComponent(service.value);
